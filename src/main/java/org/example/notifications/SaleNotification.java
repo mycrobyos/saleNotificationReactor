@@ -1,6 +1,5 @@
 package org.example.notifications;
 
-
 import org.example.model.Sale;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
