@@ -3,7 +3,7 @@ package org.example;
 import org.example.notifications.CartNotification;
 import org.example.notifications.SaleNotification;
 import org.example.service.SaleService;
-import reactor.core.scheduler.Schedulers;
+
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -15,10 +15,15 @@ public class Main {
 
         SaleNotification saleNotification = new SaleNotification();
         SaleService saleService = new SaleService();
+        CartNotification cartNotification = new CartNotification();
 
         saleNotification.getVendaFlux().delayElements(Duration.ofSeconds(5)).subscribe(sale -> {
             System.out.println(Thread.currentThread().getName());
             System.out.println(sale.getClientName() + " realizou uma compra");
+        });
+
+        cartNotification.getCartNotificationsFlux().subscribe(produto -> {
+            System.out.println("Novo produto inserido no carrinho" + produto);
         });
 
 
@@ -34,6 +39,7 @@ public class Main {
                 Integer escolha = scanner.nextInt();
                 if(escolha != 4){
                     productsId.add(escolha);
+                    cartNotification.send(escolha);
                 }
                 saveProduct = escolha;
             }
